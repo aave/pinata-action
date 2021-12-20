@@ -94,7 +94,7 @@ cleanupAndPin().then(async (hash) => {
     if (github.context.eventName == "pull_request") {
       await octokit.rest.issues.createComment({
         ...context.repo,
-        issue_number: pull_request.number,
+        issue_number: context.payload.pull_request.number,
         body: `Ipfs hash: ${hash} | Ipfs preview link: ${uri}`,
       });
     } else {
