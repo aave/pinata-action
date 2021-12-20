@@ -1,4 +1,6 @@
 const core = require("@actions/core");
+const github = require("@actions/github");
+const { context } = require("@actions/github/lib/utils");
 const pinataSDK = require("@pinata/sdk");
 
 const PIN_ALIAS = core.getInput("PIN_ALIAS");
@@ -77,12 +79,30 @@ const cleanupAndPin = async () => {
   }
 };
 
-cleanupAndPin().then((hash) => {
+cleanupAndPin().then(async (hash) => {
   core.setOutput("hash", hash);
+  let uri;
   if (CID_VERSION == 1) {
-    core.setOutput("uri", `https://${hash}.ipfs.cf-ipfs.com/`);
+    uri = `https://${hash}.ipfs.cf-ipfs.com/`;
+  } else if (CID_VERSION == 0) {
+    uri = `https://cloudflare-ipfs.com/ipfs/${hash}/`;
   }
-  if (CID_VERSION == 0) {
-    core.setOutput("uri", `https://cloudflare-ipfs.com/ipfs/${hash}/`);
+  core.setOutput("uri", uri);
+  const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
+  if (GITHUB_TOKEN) {
+    const octokit = github.getOctokit(GITHUB_TOKEN);
+    if (github.context.eventName == "pull_request") {
+      await octokit.rest.issues.createComment({
+        ...context.repo,
+        issue_number: pull_request.number,
+        body: `Ipfs hash: ${hash} | Ipfs preview link: ${uri}`,
+      });
+    } else {
+      await octokit.rest.repos.createCommitComment({
+        ...context.repo,
+        commit_sha: github.context.sha,
+        body: `This commit was deployed on ipfs\n- ipfs hash: ${hash}\n- ipfs preview link: ${uri}`,
+      });
+    }
   }
 });
