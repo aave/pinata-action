@@ -95,7 +95,7 @@ cleanupAndPin().then(async (hash) => {
       await octokit.rest.issues.createComment({
         ...context.repo,
         issue_number: context.payload.pull_request.number,
-        body: `Ipfs hash: ${hash} | Ipfs preview link: ${uri}`,
+        body: `- Ipfs hash: ${hash}\n- Ipfs preview link: ${uri}`,
       });
     } else {
       await octokit.rest.repos.createCommitComment({
