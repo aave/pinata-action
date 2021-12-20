@@ -16,6 +16,8 @@ inputs:
   CID_VERSION: # id of input
     description: "CID version (0 or 1)"
     required: true
+  GITHUB_TOKEN:
+    description: "When supplied the action will leave a comment"
 outputs:
   hash: # id of output
     description: "The ipfs hash"
