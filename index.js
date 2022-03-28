@@ -89,12 +89,20 @@ cleanupAndPin().then(async (hash) => {
   }
   core.setOutput("uri", uri);
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
+  const PR_NUM = Number(core.getInput("PULL_REQUEST_NUMBER"));
   if (GITHUB_TOKEN) {
     const octokit = github.getOctokit(GITHUB_TOKEN);
     if (github.context.eventName == "pull_request") {
       await octokit.rest.issues.createComment({
         ...context.repo,
         issue_number: context.payload.pull_request.number,
+        body: `- Ipfs hash: ${hash}\n- Ipfs preview link: ${uri}`,
+      });
+    } else
+    if (PR_NUM != 0) {
+      await octokit.rest.issues.createComment({
+        ...context.repo,
+        issue_number: PR_NUM,
         body: `- Ipfs hash: ${hash}\n- Ipfs preview link: ${uri}`,
       });
     } else {
