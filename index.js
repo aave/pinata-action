@@ -24,28 +24,6 @@ const cleanupAndPin = async () => {
     await pinata.testAuthentication();
     console.log("Auth successful");
 
-    console.log(`Cleaning up the previous pins for ${PIN_ALIAS}`);
-    try {
-      const previousPins = await pinata.pinList({
-        metadata: { name: PIN_ALIAS },
-        status: "pinned",
-      });
-      if (previousPins.count) {
-        for (let pin of previousPins.rows) {
-          try {
-            await pinata.unpin(pin.ipfs_pin_hash);
-            console.log(`${pin.ipfs_pin_hash} - deleted`);
-          } catch (e) {
-            console.log(`Failed to unpin ${pin.ipfs_pin_hash}`);
-            core.setFailed(e);
-          }
-        }
-      }
-    } catch (e) {
-      console.log("Failed to get a list of existing pins");
-      core.setFailed(e);
-    }
-
     console.log("Uploading the latest build");
     try {
       const result = await pinata.pinFromFS(BUILD_LOCATION, {
