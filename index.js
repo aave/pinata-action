@@ -53,18 +53,6 @@ const cleanupAndPin = async () => {
           name: PIN_ALIAS,
         },
         pinataOptions: {
-          customPinPolicy: {
-            regions: [
-              {
-                id: "FRA1",
-                desiredReplicationCount: 1,
-              },
-              {
-                id: "NYC1",
-                desiredReplicationCount: 1,
-              },
-            ],
-          },
           cidVersion: Number(CID_VERSION),
         },
       });
