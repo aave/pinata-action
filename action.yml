@@ -25,5 +25,5 @@ outputs:
   uri:
     description: "A uri embeddign the hash in a public gateway"
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
