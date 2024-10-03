@@ -49,9 +49,9 @@ cleanupAndPin().then(async (hash) => {
   core.setOutput("hash", hash);
   let uri;
   if (CID_VERSION == 1) {
-    uri = `https://${hash}.ipfs.cf-ipfs.com/`;
+    uri = `https://${hash}.ipfs.dweb.link/`;
   } else if (CID_VERSION == 0) {
-    uri = `https://cloudflare-ipfs.com/ipfs/${hash}/`;
+    uri = `https://dweb.link/ipfs/${hash}/`;
   }
   core.setOutput("uri", uri);
   const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
