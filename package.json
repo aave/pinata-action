@@ -27,6 +27,6 @@
     "@vercel/ncc": "^0.38.3"
   },
   "overrides": {
-    "axios": "^1.7.9"
+    "axios": ">=1.13.5"
   }
 }
