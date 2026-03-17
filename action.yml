@@ -16,6 +16,10 @@ inputs:
   CID_VERSION: # id of input
     description: "CID version (0 or 1)"
     required: true
+  PULL_REQUEST_NUMBER:
+    description: Pull request id in case it does not exist in the context by default
+    required: false
+    default: "0"
   GITHUB_TOKEN:
     description: "When supplied the action will leave a comment"
     default: ${{ github.token }}
